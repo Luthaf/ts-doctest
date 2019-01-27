@@ -23,8 +23,11 @@ export class RenderComponent extends RendererComponent {
     }
 
     private processTheReflection(reflection: Reflection) {
+        /* istanbul ignore else */
         if (reflection.comment && reflection.comment.text) {
-            reflection.comment.text = RenderComponent.removeDocTestCode(reflection.comment.text);
+            if (/^typescript doctest/.test(reflection.comment.text)) {
+                reflection.comment.text = RenderComponent.removeDocTestCode(reflection.comment.text);
+            }
         }
     }
 

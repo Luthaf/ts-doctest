@@ -56,7 +56,7 @@ test('DocTest does include the line number and column in the generated test', ()
     });
 });
 
-test('DocTest does gnerate sync test functions for code', () => {
+test('DocTest does generate sync test functions for code', () => {
     const test = new DocTest(' * foo();\n * bar();', 0, 0, 'Mock.Test', errorResolver());
     expect(test.generate()).toEqual({
         name: 'Mock.Test.line-1.col-1',

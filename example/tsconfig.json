@@ -1,0 +1,25 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "es6",
+        "lib": ["es2017"],
+        "module": "commonjs",
+        "declaration": true,
+        "experimentalDecorators": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "preserveConstEnums": true,
+        "outDir": "lib",
+        "sourceMap": true
+    },
+    "include": [
+        "src/**/*.ts",
+        "tests/**/*.test.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "example"
+    ]
+}
+

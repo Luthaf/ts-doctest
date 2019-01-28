@@ -3,4 +3,9 @@ tests/doc
 coverage
 doc
 lib
+package-lock.json
 TODO.md
+example/coverage
+example/lib
+example/tests
+example/package-lock.json

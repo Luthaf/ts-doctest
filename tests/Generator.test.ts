@@ -6,82 +6,16 @@ import {Generator} from '../src/Generator';
 import {FileSystem} from '../src/util';
 
 // Mocks ----------------------------------------------------------------------
-function loadFile(fileName: string): string {
-    const p = path.join(__dirname, fileName);
-    return fs.readFileSync(p).toString();
-}
+import {loadFile, mockFileSystem, mockConsole} from './mocks';
 
-interface DirMap {
-    [key: string]: FileMap;
-}
-
-interface FileMap {
-    [key: string]: string;
-}
-
-interface MockFileSystem extends FileSystem {
-    filesWritten: FileMap,
-    filesUnlinked: string[],
-    dirsCreated: string[],
-    dirsRemoved: string[],
-}
-
-function mockFileSystem(
-    files: FileMap,
-    dirs: DirMap
-
-): MockFileSystem {
-    const filesWritten: FileMap = {};
-    const dirsRemoved: string[] = [];
-    const dirsCreated: string[] = [];
-    const filesUnlinked: string[] = [];
-    return {
-
-        filesWritten,
-        filesUnlinked,
-        dirsCreated,
-        dirsRemoved,
-
-        readFileSync: (path) => Buffer.from(files[path]!),
-        writeFileSync: (path, data) => filesWritten[path] = data,
-        readdirSync: (path) => Object.keys(dirs[path]),
-        lstatSync: (path) => {
-            return {
-                isDirectory(): boolean {
-                    return dirs.hasOwnProperty(path);
-                }
-            };
-        },
-        existsSync: (path) => files.hasOwnProperty(path) || dirs.hasOwnProperty(path),
-        mkdirSync: (path) => dirsCreated.push(path),
-        rmdirSync: (path) => dirsRemoved.push(path),
-        unlinkSync: (path) => filesUnlinked.push(path),
-
-    };
-}
-
-interface MockConsole {
-    logs: Array<any[]>;
-    log(...args: any[]): void;
-}
-
-function mockConsole(): MockConsole {
-    const logs: Array<any[]> = [];
-    return {
-        logs,
-        log: (...args: any[]) => {
-            logs.push(args);
-        }
-    };
-}
-
-function importResolver(): ProjectImportResolver {
+function errorResolver(): ProjectImportResolver {
     return (sourceFile: string) => {
         return (importPath: string) => {
             throw new TypeError(`Unexpected import resolution in Test: ${importPath}`);
         };
     };
 }
+
 
 // Tests ----------------------------------------------------------------------
 test('Generator can be constructed from a Config', () => {
@@ -90,7 +24,7 @@ test('Generator can be constructed from a Config', () => {
         '/project/tsconfig.json',
         [],
         '/project/tests/doc',
-        importResolver()
+        errorResolver()
     );
     new Generator(config);
 });
@@ -102,7 +36,7 @@ test('Generator.run recursively removes the existing doc test directory', () => 
         '/project/tsconfig.json',
         [],
         '/project/tests/doc',
-        importResolver()
+        errorResolver()
     );
     const generator = new Generator(config);
     const fs = mockFileSystem({}, {
@@ -136,7 +70,7 @@ test('Generator.run handle missing doc test directory ', () => {
         '/project/tsconfig.json',
         [],
         '/project/tests/doc',
-        importResolver()
+        errorResolver()
     );
     const generator = new Generator(config);
     const fs = mockFileSystem({}, {});
@@ -156,7 +90,7 @@ test('Generator.run handles empty projects', () => {
         '/project/tsconfig.json',
         [],
         '/project/tests/doc',
-        importResolver()
+        errorResolver()
     );
 
     const generator = new Generator(config);
@@ -181,7 +115,7 @@ test('Generator.run handle source files without doc tests', () => {
             '/project/README.md'
         ],
         '/project/tests/doc',
-        importResolver()
+        errorResolver()
     );
 
     const generator = new Generator(config);
@@ -211,7 +145,7 @@ test('Generator.run generates doc tests from source files', () => {
             '/project/README.md'
         ],
         '/project/tests/doc',
-        importResolver()
+        errorResolver()
     );
 
     const generator = new Generator(config);

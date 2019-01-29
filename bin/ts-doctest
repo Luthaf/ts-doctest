@@ -1,3 +1,4 @@
 #!/usr/bin/env node
-require('../lib/src/cli').main();
+const fs = require('fs');
+require('../lib/src/cli').run(process, fs, console);
 

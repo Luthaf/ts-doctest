@@ -13,6 +13,7 @@ export interface FileStat {
 
 export interface Console {
     log(...args: any[]): void;
+    error(...args: any[]): void;
 }
 
 export interface FileSystem {

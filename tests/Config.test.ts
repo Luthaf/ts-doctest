@@ -1,58 +1,17 @@
 // Dependencies ---------------------------------------------------------------
-import * as ts from 'typescript';
 import * as path from 'path';
 import {Config} from '../src/Config';
 
 // Mocks ----------------------------------------------------------------------
-interface FileMap {
-    [key: string]: string;
-}
-
-function mockHost(cwd: string, files: FileMap): ts.ParseConfigFileHost {
-    return {
-        useCaseSensitiveFileNames: true,
-        fileExists: (fileName) => {
-            return files.hasOwnProperty(fileName);
-        },
-        readFile: (fileName) => {
-            return files[fileName]!;
-        },
-        getCurrentDirectory: () => cwd,
-        readDirectory: (rootDir: string, exts: ReadonlyArray<string>, excludes: ReadonlyArray<string>, includes: ReadonlyArray<string>, depth?: number): ReadonlyArray<string> => {
-            const keys = Object.keys(files).filter((key) => {
-                return exts.indexOf(path.parse(key).ext) !== -1;
-            });
-
-            // TODO filter by includes
-            // TODO filter by excludes
-            return keys;
-        },
-        onUnRecoverableConfigFileDiagnostic: diagnostic => {}
-
-    };
-}
-
-const TS_CONFIG_JSON = {
-    compilerOptions: {
-        target: "es6",
-        lib: ["es2017"],
-        module: "commonjs",
-        strict: true,
-        outDir: "lib"
-    },
-    include: [
-        "src/**/*.ts",
-        "tests/**/*.test.ts"
-    ]
-};
-
+import {mockHost, TS_CONFIG_JSON} from './mocks';
 
 // Tests ----------------------------------------------------------------------
-test('Config.fromArguments expects exactly 2 arguments', () => {
+test('Config.fromArguments prints usage if not supplied exactly 2 arguments or supplied --help as the first argument', () => {
     const host = mockHost('/', {});
-    const argCountError = new Error('Exactly 2 arguments are required: <projectDir> <testDir>');
+    const argCountError = new Error('USAGE:\n\n    ts-doctest PROJECT_DIR TEST_DIR\n');
     expect(Config.fromArguments([], host)).toEqual(argCountError);
     expect(Config.fromArguments([''], host)).toEqual(argCountError);
+    expect(Config.fromArguments(['--help', ''], host)).toEqual(argCountError);
     expect(Config.fromArguments(['', '', ''], host)).toEqual(argCountError);
 });
 

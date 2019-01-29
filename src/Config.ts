@@ -3,6 +3,12 @@ import * as path from 'path';
 import * as ts from 'typescript';
 import {FileSystem} from './util';
 
+// Constants ------------------------------------------------------------------
+const USAGE_HELP = `USAGE:
+
+    ts-doctest PROJECT_DIR TEST_DIR
+`;
+
 // Types ----------------------------------------------------------------------
 export type ProjectImportResolver = (sourceFile: string) => SourceImportResolver;
 export type SourceImportResolver = (importPath: string) => string;
@@ -26,8 +32,8 @@ export class Config {
 
     public static fromArguments(argv: string[], host: ts.ParseConfigFileHost): Config | Error {
 
-        if (argv.length != 2) {
-            return new Error('Exactly 2 arguments are required: <projectDir> <testDir>');
+        if (argv.length != 2 || argv[0] === '--help') {
+            return new Error(USAGE_HELP);
         }
 
         const projectDir = path.join(host.getCurrentDirectory(), argv[0]);
@@ -52,6 +58,7 @@ export class Config {
                     return path.relative(path.dirname(testFile), moduleFile).replace(/\.ts$/, '');
 
                 } else {
+                    // TODO simply leave untouched? This will result in a test failure
                     throw new TypeError(`Failed to resolve import: "${importPath}" from within "${sourceFile}"`);
                 }
 

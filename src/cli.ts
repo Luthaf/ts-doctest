@@ -24,12 +24,7 @@ export function run(process: {
     const config = Config.fromArguments(process.argv.slice(2), host);
     if (config instanceof Config) {
         const generator = new Generator(config);
-        try {
-            generator.run(fs, console);
-
-        } catch (err) {
-            console.error(`[Error] ${err.message}`);
-        }
+        generator.run(fs, console);
 
     } else {
         console.error(config.message);

@@ -58,8 +58,7 @@ export class Config {
                     return path.relative(path.dirname(testFile), moduleFile).replace(/\.ts$/, '');
 
                 } else {
-                    // TODO simply leave untouched? This will result in a test failure
-                    throw new TypeError(`Failed to resolve import: "${importPath}" from within "${sourceFile}"`);
+                    return importPath;
                 }
 
             };

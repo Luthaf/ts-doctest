@@ -1,6 +1,6 @@
 {
-  "name": "ts-doctest",
-  "version": "0.5.0",
+  "name": "typescript-doctest",
+  "version": "1.0.0",
   "description": "Doc Test Generator for TypeScript Projects",
   "main": "lib/index.js",
   "scripts": {
@@ -21,6 +21,8 @@
   "keywords": [
     "tests",
     "typescript",
+    "testing",
+    "documentation",
     "doc",
     "typedocplugin",
     "typedoc"

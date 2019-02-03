@@ -1,14 +1,19 @@
 {
   "name": "ts-doctest",
   "version": "0.5.0",
-  "description": "",
+  "description": "Doc Test Generator for TypeScript Projects",
   "main": "lib/index.js",
   "scripts": {
     "prepare": "npm run build",
+    "prepublishOnly" : "npm test",
     "test": "jest --config jestconfig.json",
-    "lint": "tslint -p tsconfig.json",
     "doc": "typedoc --out ./doc",
     "build": "tsc"
+  },
+  "files": ["lib/src/**/*", "bin/ts-doctest"],
+  "homepage": "https://gitlab.com/BonsaiDen/ts-doctest#readme",
+  "bugs": {
+      "url": "https://gitlab.com/BonsaiDen/ts-doctest/issues"
   },
   "bin": {
     "ts-doctest": "./bin/ts-doctest"
@@ -20,9 +25,9 @@
     "typedocplugin",
     "typedoc"
   ],
-  "author": "",
+  "author": "Ivo Wetzel",
   "license": "MIT",
-  "dependencies": { 
+  "dependencies": {
     "markdown-it": "^8.4.2",
     "typedoc": "^0.14.2",
     "typescript": "^3.2.2"

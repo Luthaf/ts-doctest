@@ -36,7 +36,7 @@ export class Config {
             return new Error(USAGE_HELP);
         }
 
-        const projectDir = path.join(host.getCurrentDirectory(), argv[0]);
+        const projectDir = resolveArgPath(host, argv[0]);
         const configFile = path.join(projectDir, 'tsconfig.json');
         if (!host.fileExists(configFile)) {
             return new Error(`No TypeScript configuration file found: ${configFile}`);
@@ -44,7 +44,7 @@ export class Config {
 
         // Parse TS Config
         const options = ts.getParsedCommandLineOfConfigFile(configFile, {}, host)!;
-        const testBase = path.join(host.getCurrentDirectory(), argv[1], 'doc');
+        const testBase = path.join(resolveArgPath(host, argv[1]), 'doc');
         const importResolver = (sourceFile: string) => {
             return (importPath: string) => {
 
@@ -78,5 +78,15 @@ export class Config {
 
     }
 
+}
+
+// Helpers --------------------------------------------------------------------
+function resolveArgPath(host: ts.ParseConfigFileHost, p: string): string {
+    if (p[0] === path.sep) {
+        return p;
+
+    } else {
+        return path.join(host.getCurrentDirectory(), p);
+    }
 }
 

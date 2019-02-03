@@ -22,7 +22,7 @@ test('Config.fromArguments checks for existence of tsconfig.json in projectDir',
 
 test('Config.fromArguments generates Config for absolute paths', () => {
 
-    const host = mockHost('/', {
+    const host = mockHost('/home', {
         '/project/tsconfig.json': JSON.stringify(TS_CONFIG_JSON),
         '/project/src/index.ts': '',
         '/project/src/Bar.ts': '',

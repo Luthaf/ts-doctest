@@ -1,6 +1,6 @@
 // TypeDoc Plugin for removing Doc Test only lines from Doc Comments
 import { Application } from 'typedoc/dist/lib/application';
-import { Reflection, ReflectionKind } from 'typedoc/dist/lib/models';
+import { Reflection, ProjectReflection } from 'typedoc/dist/lib/models';
 import { Component, RendererComponent } from 'typedoc/dist/lib/output/components';
 import { RendererEvent } from 'typedoc/dist/lib/output/events';
 
@@ -18,17 +18,27 @@ export class RenderComponent extends RendererComponent {
         const keys = Object.keys(reflections);
         keys.forEach((key: string) => {
             const reflection = reflections[key as any];
-            this.processTheReflection(reflection);
+            this.processReflections(reflection);
         });
+
+        if (event.project.readme) {
+            event.project.readme = RenderComponent.updateCodeblocks(event.project.readme);
+        }
+
     }
 
-    private processTheReflection(reflection: Reflection) {
+    private processReflections(reflection: Reflection) {
         /* istanbul ignore else */
-        if (reflection.comment && reflection.comment.text) {
-            if (/^typescript doctest/.test(reflection.comment.text)) {
-                reflection.comment.text = RenderComponent.removeDocTestCode(reflection.comment.text);
-            }
+        if (reflection.comment) {
+            reflection.comment.text = RenderComponent.updateCodeblocks(reflection.comment.text);
+            reflection.comment.shortText = RenderComponent.updateCodeblocks(reflection.comment.shortText);
         }
+    }
+
+    private static updateCodeblocks(text: string): string {
+        return text.replace(/```typescript doctest([^]+?)```/g, (_, inner) => {
+            return '```typescript\n' + RenderComponent.removeDocTestCode(inner) + '```';
+        });
     }
 
     private static removeDocTestCode(text: string) {
@@ -37,8 +47,7 @@ export class RenderComponent extends RendererComponent {
             .filter((l) => l[0] !== '#')
             .join('\n')
             .replace(/###(.*?)###\s*/g, '')
-            .trim()
-            .replace(/^typescript doctest/, 'typescript');
+            .trim();
     }
 
 }

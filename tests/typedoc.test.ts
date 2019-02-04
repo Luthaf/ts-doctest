@@ -63,7 +63,8 @@ test('TypeDoc Plugin not removes hidden line markers (#) from untagged codeblock
             reflections: {
                 0: {
                     comment: {
-                        text: 'typescript\n# Hidden Line\nexpression();\n# Another Hidden Line'
+                        text: '```typescript\n# Hidden Line\nexpression();\n# Another Hidden Line```',
+                        shortText: '```typescript\n# Hidden Line\nexpression();\n# Another Hidden Line```',
                     }
                 }
             }
@@ -71,7 +72,35 @@ test('TypeDoc Plugin not removes hidden line markers (#) from untagged codeblock
     };
 
     application.mockEvents!.beginRender.call(application.mockRenderer, event);
-    expect(event.project.reflections[0]!.comment!.text).toEqual('typescript\n# Hidden Line\nexpression();\n# Another Hidden Line');
+    expect(event.project.reflections[0]!.comment!.text).toEqual('```typescript\n# Hidden Line\nexpression();\n# Another Hidden Line```');
+    expect(event.project.reflections[0]!.comment!.shortText).toEqual('```typescript\n# Hidden Line\nexpression();\n# Another Hidden Line```');
+
+});
+
+test('TypeDoc Plugin updates tagged codeblocks from comments and project readme', async () => {
+
+    const TypeDocPlugin = <MockPlugin> <unknown> (await import('../src/index'));
+    const application = mockApplication();
+    TypeDocPlugin(application);
+
+    const event = <RendererEvent> <unknown> {
+        project: {
+            readme: '# Example\n```typescript doctest\na();```\n\n```typescript doctest\nb();```',
+            reflections: {
+                0: {
+                    comment: {
+                        text: '# Example\n```typescript doctest\na();```\n\n```typescript doctest\nb();```',
+                        shortText: '# Example\n```typescript doctest\na();```\n\n```typescript doctest\nb();```',
+                    }
+                }
+            }
+        }
+    };
+
+    application.mockEvents!.beginRender.call(application.mockRenderer, event);
+    expect(event.project.readme).toEqual('# Example\n```typescript\na();```\n\n```typescript\nb();```');
+    expect(event.project.reflections[0]!.comment!.text).toEqual('# Example\n```typescript\na();```\n\n```typescript\nb();```');
+    expect(event.project.reflections[0]!.comment!.shortText).toEqual('# Example\n```typescript\na();```\n\n```typescript\nb();```');
 
 });
 
@@ -86,7 +115,8 @@ test('TypeDoc Plugin removes hidden line markers (#) from tagged codeblocks', as
             reflections: {
                 0: {
                     comment: {
-                        text: 'typescript doctest\n# Hidden Line\nexpression();\n# Another Hidden Line'
+                        text: '```typescript doctest\n# Hidden Line\nexpression();\n# Another Hidden Line```',
+                        shortText: '```typescript doctest\n# Hidden Line\nexpression();\n# Another Hidden Line```',
                     }
                 }
             }
@@ -94,7 +124,8 @@ test('TypeDoc Plugin removes hidden line markers (#) from tagged codeblocks', as
     };
 
     application.mockEvents!.beginRender.call(application.mockRenderer, event);
-    expect(event.project.reflections[0]!.comment!.text).toEqual('typescript\nexpression();');
+    expect(event.project.reflections[0]!.comment!.text).toEqual('```typescript\nexpression();```');
+    expect(event.project.reflections[0]!.comment!.shortText).toEqual('```typescript\nexpression();```');
 
 });
 
@@ -109,7 +140,8 @@ test('TypeDoc Plugin removes hidden section markers (###...###) from codeblocks'
             reflections: {
                 0: {
                     comment: {
-                        text: 'typescript doctest\nexpression(###2###);\nexpression(###"string"###);'
+                        text: '```typescript doctest\nexpression(###2###);\nexpression(###"string"###);```',
+                        shortText: '```typescript doctest\nexpression(###2###);\nexpression(###"string"###);```',
                     }
                 }
             }
@@ -117,7 +149,8 @@ test('TypeDoc Plugin removes hidden section markers (###...###) from codeblocks'
     };
 
     application.mockEvents!.beginRender.call(application.mockRenderer, event);
-    expect(event.project.reflections[0]!.comment!.text).toEqual('typescript\nexpression();\nexpression();');
+    expect(event.project.reflections[0]!.comment!.text).toEqual('```typescript\nexpression();\nexpression();```');
+    expect(event.project.reflections[0]!.comment!.shortText).toEqual('```typescript\nexpression();\nexpression();```');
 
 });
 

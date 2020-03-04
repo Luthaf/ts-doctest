@@ -37,7 +37,7 @@ export class RenderComponent extends RendererComponent {
 
     private static updateCodeblocks(text: string): string {
         return text.replace(/```typescript doctest([^]+?)```/g, (_, inner) => {
-            return '```typescript\n' + RenderComponent.removeDocTestCode(inner) + '```';
+            return '```typescript\n' + RenderComponent.removeDocTestCode(inner) + '\n```';
         });
     }
 

@@ -1,6 +1,6 @@
 // Dependencies ---------------------------------------------------------------
 import {createSourceFile, forEachChild, Node, ScriptTarget, SourceFile, SyntaxKind} from 'typescript';
-import {ProjectImportResolver, SourceImportResolver} from './Config';
+import {ProjectImportResolver} from './Config';
 import {DocSource, DocTest, DocTestData} from './DocTest';
 
 
@@ -43,22 +43,20 @@ export class TypeScriptSource implements DocSource {
 
     private extractDocTests<T extends HasJSDoc>(node: T, resolver: ProjectImportResolver) {
         for(const doc of node.jsDoc) {
-
             const expr = /```typescript doctest([^´]+?)```/g;
 
             let match = null;
             while((match = expr.exec(doc.comment))) {
-                const sourceIndex = this.raw.indexOf(match[1].trim());
-                const { line, character } = this.file.getLineAndCharacterOfPosition(sourceIndex);
+                const { line } = this.file.getLineAndCharacterOfPosition(doc.pos);
+                const offset = countNewline(doc.comment.slice(0, match.index))
+
                 this.tests.push(new DocTest(
                     match[1],
-                    line,
-                    character,
+                    line + offset,
                     nodePath(node),
                     resolver(this.path)
                 ));
             }
-
         }
     }
 
@@ -81,6 +79,15 @@ function isNamedNode(object: any): object is NamedNode {
     return 'name' in object;
 }
 
+function countNewline(value: string): number {
+    const matches = value.match(/\n/g);
+    if (matches) {
+        return matches.length + 1;
+    } else {
+        return 0;
+    }
+}
+
 interface NamedNode {
     name: NodeName;
 }
@@ -101,5 +108,5 @@ interface HasJSDoc {
 
 interface JSDoc {
     comment: string;
+    pos: number;
 }
-

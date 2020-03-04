@@ -1,7 +1,6 @@
 // Dependencies ---------------------------------------------------------------
 import * as path from 'path';
 import * as ts from 'typescript';
-import {FileSystem} from './util';
 
 // Constants ------------------------------------------------------------------
 const USAGE_HELP = `USAGE:
@@ -89,4 +88,3 @@ function resolveArgPath(host: ts.ParseConfigFileHost, p: string): string {
         return path.join(host.getCurrentDirectory(), p);
     }
 }
-

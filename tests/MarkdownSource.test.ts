@@ -27,8 +27,8 @@ test('MarkdownSource generates DocTest from tagged Codeblock in Markdown file', 
 
     const tests = source.generateTests();
     expect(tests).toEqual([{
-        name: 'Codeblock.line-4.col-1',
-        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 4, column 1)\', () => {\n    expect(1 + 1).toEqual(2);\n});\n\n'
+        name: 'Codeblock.line-4',
+        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 4)\', () => {\n    expect(1 + 1).toEqual(2);\n});\n\n'
     }]);
 
 });
@@ -40,12 +40,12 @@ test('MarkdownSource generates DocTests from multiple tagged Codeblock in Markdo
 
     const tests = source.generateTests();
     expect(tests).toEqual([{
-        name: 'Codeblock.line-4.col-1',
-        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 4, column 1)\', () => {\n    expect(1 + 1).toEqual(2);\n});\n\n'
+        name: 'Codeblock.line-4',
+        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 4)\', () => {\n    expect(1 + 1).toEqual(2);\n});\n\n'
 
     }, {
-        name: 'Codeblock.line-10.col-1',
-        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 10, column 1)\', () => {\n    expect(2 * 2).toEqual(4);\n});\n\n'
+        name: 'Codeblock.line-10',
+        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 10)\', () => {\n    expect(2 * 2).toEqual(4);\n});\n\n'
     }]);
 
 });
@@ -57,8 +57,8 @@ test('MarkdownSource generates DocTest from tagged Codeblock with Doc Comment in
 
     const tests = source.generateTests();
     expect(tests).toEqual([{
-        name: 'Codeblock.line-6.col-1',
-        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 6, column 1)\', () => {\n    /**\n    ```typescript doctest\n    expect(2 - 2).toEqual(0);\n    ```\n    /\n    expect(1 + 1).toEqual(2);\n});\n\n'
+        name: 'Codeblock.line-6',
+        source: '// Auto generated doc test\n\n\ntest(\'Codeblock (line 6)\', () => {\n    /**\n    ```typescript doctest\n    expect(2 - 2).toEqual(0);\n    ```\n    /\n    expect(1 + 1).toEqual(2);\n});\n\n'
     }]);
 
 });

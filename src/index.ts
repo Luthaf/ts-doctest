@@ -1,6 +1,6 @@
 // TypeDoc Plugin for removing Doc Test only lines from Doc Comments
 import { Application } from 'typedoc/dist/lib/application';
-import { Reflection, ProjectReflection } from 'typedoc/dist/lib/models';
+import { Reflection } from 'typedoc/dist/lib/models';
 import { Component, RendererComponent } from 'typedoc/dist/lib/output/components';
 import { RendererEvent } from 'typedoc/dist/lib/output/events';
 
@@ -56,4 +56,3 @@ module.exports = function(PluginHost: Application) {
     // @ts-ignore
     PluginHost.owner.renderer.addComponent('render-component', RenderComponent);
 };
-

@@ -1,5 +1,5 @@
 // Dependencies ---------------------------------------------------------------
-import {createSourceFile, ScriptTarget, forEachChild, Node, Token, SyntaxKind} from 'typescript';
+import {createSourceFile, ScriptTarget, forEachChild, Node, SyntaxKind} from 'typescript';
 import {SourceImportResolver} from './Config';
 
 
@@ -23,18 +23,9 @@ export class DocTest {
     private imports: string[] = [];
     private name: string;
     private line: number;
-    private col: number;
 
-    constructor(
-        raw: string,
-        line: number,
-        col: number,
-        name: string,
-        resolver: SourceImportResolver
-    ) {
-
+    constructor(raw: string, line: number, name: string, resolver: SourceImportResolver) {
         this.line = line;
-        this.col = col;
         this.name = name;
 
         // Strip JS doc remains from source
@@ -52,8 +43,6 @@ export class DocTest {
         this.findImports(testAst, imports);
 
         if (imports.length > 0) {
-
-            let index = 0;
             let offset = 0;
 
             for (const im of imports) {
@@ -75,8 +64,6 @@ export class DocTest {
                     // Remove the original import line
                     source = source.substring(0, begin) + source.substring(im.end + offset);
                     offset -= source.substring(begin, im.end + offset).length;
-                    index += 1;
-
                 } else {
                     // Resolve import(...) expressions paths
                     const resolvedPath = resolver(im.text);
@@ -99,7 +86,7 @@ export class DocTest {
     }
 
     public generate(): DocTestData {
-        const description = `${this.name} (line ${this.line + 1}, column ${this.col + 1})`;
+        const description = `${this.name} (line ${this.line + 1})`;
 
         const name = 'test';
         const source = `// Auto generated doc test
@@ -111,7 +98,7 @@ ${DocTest.indentSource(this.getSource())}
 
 `
         return {
-            name: `${this.name}.line-${this.line + 1}.col-${this.col + 1}`,
+            name: `${this.name}.line-${this.line + 1}`,
             source
         };
 
@@ -178,4 +165,3 @@ interface ImportCall {
     expression: Node,
     arguments: ImportPath[]
 }
-

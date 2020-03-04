@@ -18,7 +18,7 @@ export function run(process: {
         readFile: fileName => fs.readFileSync(fileName).toString(),
         getCurrentDirectory: () => cwd,
         readDirectory: ts.sys.readDirectory,
-        onUnRecoverableConfigFileDiagnostic: /*istanbul ignore next*/ diagnostic => {}
+        onUnRecoverableConfigFileDiagnostic: /*istanbul ignore next*/ () => {}
     };
 
     const config = Config.fromArguments(process.argv.slice(2), host);
@@ -31,4 +31,3 @@ export function run(process: {
     }
 
 }
-

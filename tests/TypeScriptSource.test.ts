@@ -28,23 +28,23 @@ test('TypeScriptSource generates DocTests from tagged codeblocks in TypeScript D
 
     const tests = source.generateTests();
     expect(tests).toEqual([{
-        name: 'Nested.line-5.col-4',
-        source: '// Auto generated doc test\n\n\ntest(\'Nested (line 5, column 4)\', () => {\n    expect(\'Namespace\').toEqual(\'Namespace\');\n});\n\n'
+        name: 'Nested.line-4',
+        source: '// Auto generated doc test\n\n\ntest(\'Nested (line 4)\', () => {\n    expect(\'Namespace\').toEqual(\'Namespace\');\n});\n\n'
 
     }, {
-        name: 'Nested.Foo.line-14.col-8',
-        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo (line 14, column 8)\', () => {\n    expect(\'Class Foo\').toEqual(\'Class Foo\');\n});\n\n'
+        name: 'Nested.Foo.line-13',
+        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo (line 13)\', () => {\n    expect(\'Class Foo\').toEqual(\'Class Foo\');\n});\n\n'
 
     }, {
-        name: 'Nested.Foo.tag.line-23.col-12',
-        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo.tag (line 23, column 12)\', () => {\n    expect(\'Static Class Member Tag\').toEqual(\'Static Class Member Tag\');\n});\n\n'
+        name: 'Nested.Foo.tag.line-22',
+        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo.tag (line 22)\', () => {\n    expect(\'Static Class Member Tag\').toEqual(\'Static Class Member Tag\');\n});\n\n'
 
     }, {
-        name: 'Nested.Foo.bar.line-32.col-12',
-        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo.bar (line 32, column 12)\', () => {\n    expect(\'Static Class Method\').toEqual(\'Static Class Method\');\n});\n\n'
+        name: 'Nested.Foo.bar.line-31',
+        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo.bar (line 31)\', () => {\n    expect(\'Static Class Method\').toEqual(\'Static Class Method\');\n    expect(\'Static Class Method\').toEqual(\'Static Class Method\');\n});\n\n'
 
     }, {
-        name: 'Nested.Foo.constructor.line-44.col-12',
-        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo.constructor (line 44, column 12)\', () => {\n    expect(\'Class Constructor\').toEqual(\'Class Constructor\');\n});\n\n'
+        name: 'Nested.Foo.constructor.line-44',
+        source: '// Auto generated doc test\n\n\ntest(\'Nested.Foo.constructor (line 44)\', () => {\n    expect(\'Class Constructor\').toEqual(\'Class Constructor\');\n});\n\n'
     }]);
 });

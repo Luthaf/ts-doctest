@@ -30,6 +30,7 @@ namespace Nested {
          *
          * ```typescript doctest
          * expect('Static Class Method').toEqual('Static Class Method');
+         * expect('Static Class Method').toEqual('Static Class Method');
          * ```
          */
         public static bar() {

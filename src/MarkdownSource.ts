@@ -1,7 +1,6 @@
 // Dependencies ---------------------------------------------------------------
-import * as path from 'path';
 import * as MarkdownIt from 'markdown-it';
-import {ProjectImportResolver, SourceImportResolver} from './Config';
+import {ProjectImportResolver} from './Config';
 import {DocSource, DocTest, DocTestData} from './DocTest';
 
 
@@ -13,7 +12,6 @@ export class MarkdownSource implements DocSource {
     private raw: string;
 
     constructor(filePath: string, raw: string, resolver: ProjectImportResolver) {
-
         this.path = filePath;
         this.raw = raw;
 
@@ -21,11 +19,10 @@ export class MarkdownSource implements DocSource {
         const tokens = m.parse(raw, {});
         tokens.filter((t) => t.type === 'fence' && t.info === 'typescript doctest').map((token) => {
             const index = raw.indexOf(token.content);
-            const { line, character } = this.getLineAndCharacterOfPosition(index);
+            const { line } = this.getLineAndCharacterOfPosition(index);
             this.tests.push(new DocTest(
                 token.content,
                 line,
-                character,
                 'Codeblock',
                 resolver(this.path)
             ));
@@ -52,4 +49,3 @@ export class MarkdownSource implements DocSource {
     }
 
 };
-

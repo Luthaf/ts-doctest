@@ -1,5 +1,4 @@
 // Dependencies ---------------------------------------------------------------
-import * as fs from 'fs';
 import * as path from 'path';
 
 // Exports --------------------------------------------------------------------
@@ -28,7 +27,7 @@ export interface FileSystem {
 }
 
 export function rmDirSync(p: string, fs: FileSystem) {
-    fs.readdirSync(p).forEach((file, index) => {
+    fs.readdirSync(p).forEach((file) => {
         const curPath = path.join(p, file);
         if (fs.lstatSync(curPath).isDirectory()) {
             rmDirSync(curPath, fs);
@@ -39,4 +38,3 @@ export function rmDirSync(p: string, fs: FileSystem) {
     });
     fs.rmdirSync(p);
 }
-

@@ -1,6 +1,5 @@
 // Dependencies ---------------------------------------------------------------
 import * as path from 'path';
-import * as ts from 'typescript';
 import {Config} from './Config';
 import {DocSource} from './DocTest';
 import {MarkdownSource} from './MarkdownSource';
@@ -95,4 +94,3 @@ export class Generator {
     }
 
 }
-

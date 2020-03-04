@@ -21,12 +21,12 @@ export class DocTest {
 
     private source: string;
     private imports: string[] = [];
-    private name: string;
+    private file: string;
     private line: number;
 
-    constructor(raw: string, line: number, name: string, resolver: SourceImportResolver) {
+    constructor(raw: string, line: number, file: string, resolver: SourceImportResolver) {
         this.line = line;
-        this.name = name;
+        this.file = file;
 
         // Strip JS doc remains from source
         let source = raw.split('\n').map(DocTest.extracDocLine).join('\n');
@@ -34,7 +34,7 @@ export class DocTest {
         // Parse AST and extract imports and detect `await` usage
         const imports: Array<ImportPath> = [];
         const testAst = createSourceFile(
-            name,
+            file,
             source,
             ScriptTarget.ES2015,
             true
@@ -86,7 +86,7 @@ export class DocTest {
     }
 
     public generate(): DocTestData {
-        const description = `${this.name} (line ${this.line + 1})`;
+        const description = `${this.file} (line ${this.line + 1})`;
 
         const name = 'test';
         const source = `// Auto generated doc test
@@ -98,7 +98,7 @@ ${DocTest.indentSource(this.getSource())}
 
 `
         return {
-            name: `${this.name}.line-${this.line + 1}`,
+            name: `line-${this.line + 1}`,
             source
         };
 

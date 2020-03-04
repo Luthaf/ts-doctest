@@ -74,12 +74,12 @@ test('CLI does load TypeScript project from configuration and generate doc tests
     expect(console.logs).toEqual([
         ['Using configuration from: /project/tsconfig.json'],
         ['Scanning 1 project file(s) for doc tests...'],
-        ['Generated doc test: /project/tests/doc/README.md.Codeblock.line-4.test.ts'],
+        ['Generated doc test: /project/tests/doc/README.md.line-4.test.ts'],
         ['Generated 1 doc test(s) in total.']
     ]);
 
     expect(fs.filesWritten).toEqual({
-        '/project/tests/doc/README.md.Codeblock.line-4.test.ts': '// Auto generated doc test\n\n\ntest(\'Codeblock (line 4)\', () => {\n    expect(1 + 1).toEqual(2);\n});\n\n'
+        '/project/tests/doc/README.md.line-4.test.ts': '// Auto generated doc test\n\n\ntest(\'README.md (line 4)\', () => {\n    expect(1 + 1).toEqual(2);\n});\n\n'
     });
     expect(fs.filesUnlinked).toEqual([]);
     expect(fs.dirsCreated).toEqual(['/project/tests/doc']);

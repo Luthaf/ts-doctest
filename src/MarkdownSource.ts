@@ -23,7 +23,7 @@ export class MarkdownSource implements DocSource {
             this.tests.push(new DocTest(
                 token.content,
                 line,
-                'Codeblock',
+                this.path,
                 resolver(this.path)
             ));
         });

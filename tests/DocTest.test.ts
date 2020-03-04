@@ -51,7 +51,7 @@ test('DocTest leaves leading whitespace from code lines untouched', () => {
 test('DocTest does include the line number in the generated test', () => {
     const test = new DocTest(' * foo();\n * bar();', 31, 'Mock.Test', errorResolver());
     expect(test.generate()).toEqual({
-        name: 'Mock.Test.line-32',
+        name: 'line-32',
         source: '// Auto generated doc test\n\n\ntest(\'Mock.Test (line 32)\', () => {\n    foo();\n    bar();\n});\n\n'
     });
 });
@@ -59,7 +59,7 @@ test('DocTest does include the line number in the generated test', () => {
 test('DocTest does generate sync test functions for code', () => {
     const test = new DocTest(' * foo();\n * bar();', 0, 'Mock.Test', errorResolver());
     expect(test.generate()).toEqual({
-        name: 'Mock.Test.line-1',
+        name: 'line-1',
         source: '// Auto generated doc test\n\n\ntest(\'Mock.Test (line 1)\', () => {\n    foo();\n    bar();\n});\n\n'
     });
 });
@@ -68,7 +68,7 @@ test('DocTest does generate sync test functions for code', () => {
 test('DocTest detect `await` expressions in code and generates a async test function', () => {
     const test = new DocTest(' * foo();\n * await bar();', 0, 'Mock.Test', errorResolver());
     expect(test.generate()).toEqual({
-        name: 'Mock.Test.line-1',
+        name: 'line-1',
         source: '// Auto generated doc test\n\n\ntest(\'Mock.Test (line 1)\', async () => {\n    foo();\n    await bar();\n});\n\n'
     });
 });
@@ -81,7 +81,7 @@ test('DocTest hoist import statements and resolves them to their new relative ta
     }));
 
     expect(test.generate()).toEqual({
-        name: 'Mock.Test.line-1',
+        name: 'line-1',
         source: '// Auto generated doc test\nimport Foo from "src/Foo";\n\nimport {Bar} from "src/bar/Bar";\n\ntest(\'Mock.Test (line 1)\', async () => {\n    new Foo(new Bar());\n});\n\n'
     });
 });
@@ -94,7 +94,7 @@ test('DocTest rewrites dynamic import(...) calls to their new relative targets',
     }));
 
     expect(test.generate()).toEqual({
-        name: 'Mock.Test.line-1',
+        name: 'line-1',
         source: '// Auto generated doc test\n\n\ntest(\'Mock.Test (line 1)\', () => {\n    const Bar = import("src/bar/Bar"); const Foo = import("src/Foo");\n});\n\n'
     });
 
@@ -103,7 +103,7 @@ test('DocTest rewrites dynamic import(...) calls to their new relative targets',
 test('DocTest ignore empty import(...) calls', () => {
     const test = new DocTest(' * const Empty = import();', 0, 'Mock.Test', errorResolver());
     expect(test.generate()).toEqual({
-        name: 'Mock.Test.line-1',
+        name: 'line-1',
         source: '// Auto generated doc test\n\n\ntest(\'Mock.Test (line 1)\', () => {\n    const Empty = import();\n});\n\n'
     });
 });

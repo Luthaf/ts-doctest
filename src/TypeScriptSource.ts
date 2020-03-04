@@ -53,7 +53,7 @@ export class TypeScriptSource implements DocSource {
                 this.tests.push(new DocTest(
                     match[1],
                     line + offset,
-                    nodePath(node),
+                    this.path,
                     resolver(this.path)
                 ));
             }
@@ -64,21 +64,6 @@ export class TypeScriptSource implements DocSource {
 
 
 // Helpers --------------------------------------------------------------------
-function nodePath<T extends HasJSDoc>(node: T) {
-    const path = [isNamedNode(node) ? node.name.escapedText : 'constructor'];
-    let parent = node;
-    while((parent = parent.parent)) {
-        if (isNamedNode(parent)) {
-            path.unshift(parent.name.escapedText);
-        }
-    }
-    return path.join('.');
-}
-
-function isNamedNode(object: any): object is NamedNode {
-    return 'name' in object;
-}
-
 function countNewline(value: string): number {
     const matches = value.match(/\n/g);
     if (matches) {
@@ -86,14 +71,6 @@ function countNewline(value: string): number {
     } else {
         return 0;
     }
-}
-
-interface NamedNode {
-    name: NodeName;
-}
-
-interface NodeName {
-    escapedText: string;
 }
 
 function isJSDoc(object: any): object is HasJSDoc {

@@ -52,17 +52,16 @@ export class Generator {
 
     private loadSourceFiles(fs: FileSystem): DocSource[] {
         return this.config.includedFiles.map((fileName) => {
-
             const raw = fs.readFileSync(fileName).toString();
             const ext = path.parse(fileName).ext.toLowerCase();
+            const name = path.relative(this.config.projectDir, fileName);
 
-            // Markdown Sources
             if (ext === '.md') {
-                return new MarkdownSource(fileName, raw, this.config.importResolver);
-
-            // TypeScript Sources
+                // Markdown Sources
+                return new MarkdownSource(name, raw, this.config.importResolver);
             } else {
-                return new TypeScriptSource(fileName, raw, this.config.importResolver);
+                // TypeScript Sources
+                return new TypeScriptSource(name, raw, this.config.importResolver);
             }
 
         }).filter(source => source.hasTests());
@@ -74,7 +73,7 @@ export class Generator {
 
             const testSourceFile = path.join(
                 this.config.testBase,
-                source.path.substring(this.config.projectDir.length)
+                source.path,
             );
 
             fs.mkdirSync(path.dirname(testSourceFile), {

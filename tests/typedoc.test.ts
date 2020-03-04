@@ -153,4 +153,3 @@ test('TypeDoc Plugin removes hidden section markers (###...###) from codeblocks'
     expect(event.project.reflections[0]!.comment!.shortText).toEqual('```typescript\nexpression();\nexpression();```');
 
 });
-

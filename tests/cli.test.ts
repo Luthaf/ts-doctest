@@ -86,4 +86,3 @@ test('CLI does load TypeScript project from configuration and generate doc tests
     expect(fs.dirsRemoved).toEqual([]);
 
 });
-

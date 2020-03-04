@@ -1,15 +1,12 @@
 // Dependencies ---------------------------------------------------------------
-import * as fs from 'fs';
-import * as path from 'path';
 import {Config, ProjectImportResolver} from '../src/Config';
 import {Generator} from '../src/Generator';
-import {FileSystem} from '../src/util';
 
 // Mocks ----------------------------------------------------------------------
 import {loadFile, mockFileSystem, mockConsole} from './mocks';
 
 function errorResolver(): ProjectImportResolver {
-    return (sourceFile: string) => {
+    return () => {
         return (importPath: string) => {
             throw new TypeError(`Unexpected import resolution in Test: ${importPath}`);
         };
@@ -160,21 +157,21 @@ test('Generator.run generates doc tests from source files', () => {
     expect(mConsole.logs).toEqual([
         ['Using configuration from: /project/tsconfig.json'],
         ['Scanning 2 project file(s) for doc tests...'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.line-5.col-2.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.line-14.col-6.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.tag.line-23.col-10.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.bar.line-32.col-10.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.constructor.line-44.col-10.test.ts'],
+        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.line-5.col-4.test.ts'],
+        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.line-14.col-8.test.ts'],
+        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.tag.line-23.col-12.test.ts'],
+        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.bar.line-32.col-12.test.ts'],
+        ['Generated doc test: /project/tests/doc/src/index.ts.Nested.Foo.constructor.line-44.col-12.test.ts'],
         ['Generated doc test: /project/tests/doc/README.md.Codeblock.line-4.col-1.test.ts'],
         ['Generated 6 doc test(s) in total.']
     ]);
 
     expect(fs.filesWritten).toEqual({
-        '/project/tests/doc/src/index.ts.Nested.line-5.col-2.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested (line 5, column 2)\', () => {\n    expect(\'Namespace\').toEqual(\'Namespace\');\n});\n\n',
-        '/project/tests/doc/src/index.ts.Nested.Foo.line-14.col-6.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo (line 14, column 6)\', () => {\n    expect(\'Class Foo\').toEqual(\'Class Foo\');\n});\n\n',
-        '/project/tests/doc/src/index.ts.Nested.Foo.tag.line-23.col-10.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo.tag (line 23, column 10)\', () => {\n    expect(\'Static Class Member Tag\').toEqual(\'Static Class Member Tag\');\n});\n\n',
-        '/project/tests/doc/src/index.ts.Nested.Foo.bar.line-32.col-10.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo.bar (line 32, column 10)\', () => {\n    expect(\'Static Class Method\').toEqual(\'Static Class Method\');\n});\n\n',
-        '/project/tests/doc/src/index.ts.Nested.Foo.constructor.line-44.col-10.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo.constructor (line 44, column 10)\', () => {\n    expect(\'Class Constructor\').toEqual(\'Class Constructor\');\n});\n\n',
+        '/project/tests/doc/src/index.ts.Nested.line-5.col-4.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested (line 5, column 4)\', () => {\n    expect(\'Namespace\').toEqual(\'Namespace\');\n});\n\n',
+        '/project/tests/doc/src/index.ts.Nested.Foo.line-14.col-8.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo (line 14, column 8)\', () => {\n    expect(\'Class Foo\').toEqual(\'Class Foo\');\n});\n\n',
+        '/project/tests/doc/src/index.ts.Nested.Foo.tag.line-23.col-12.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo.tag (line 23, column 12)\', () => {\n    expect(\'Static Class Member Tag\').toEqual(\'Static Class Member Tag\');\n});\n\n',
+        '/project/tests/doc/src/index.ts.Nested.Foo.bar.line-32.col-12.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo.bar (line 32, column 12)\', () => {\n    expect(\'Static Class Method\').toEqual(\'Static Class Method\');\n});\n\n',
+        '/project/tests/doc/src/index.ts.Nested.Foo.constructor.line-44.col-12.test.ts': '// Auto generated doc test\n\n\ntest(\'Nested.Foo.constructor (line 44, column 12)\', () => {\n    expect(\'Class Constructor\').toEqual(\'Class Constructor\');\n});\n\n',
         '/project/tests/doc/README.md.Codeblock.line-4.col-1.test.ts': '// Auto generated doc test\n\n\ntest(\'Codeblock (line 4, column 1)\', () => {\n    expect(1 + 1).toEqual(2);\n});\n\n'
     });
 
@@ -186,4 +183,3 @@ test('Generator.run generates doc tests from source files', () => {
     expect(fs.dirsRemoved).toEqual([]);
 
 });
-

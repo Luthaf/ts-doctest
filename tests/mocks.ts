@@ -119,4 +119,3 @@ export const TS_CONFIG_JSON = {
         "tests/**/*.test.ts"
     ]
 };
-

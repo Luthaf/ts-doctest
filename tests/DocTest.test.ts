@@ -107,4 +107,3 @@ test('DocTest ignore empty import(...) calls', () => {
         source: '// Auto generated doc test\n\n\ntest(\'Mock.Test (line 1, column 1)\', () => {\n    const Empty = import();\n});\n\n'
     });
 });
-

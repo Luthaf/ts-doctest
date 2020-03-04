@@ -5,15 +5,18 @@
   "main": "lib/src/index.js",
   "scripts": {
     "prepare": "npm run build",
-    "prepublishOnly" : "npm test",
+    "prepublishOnly": "npm test",
     "test": "jest --config jestconfig.json",
     "doc": "typedoc --out ./doc",
     "build": "tsc"
   },
-  "files": ["lib/src/**/*", "bin/ts-doctest"],
+  "files": [
+    "lib/src/**/*",
+    "bin/ts-doctest"
+  ],
   "homepage": "https://gitlab.com/BonsaiDen/ts-doctest#readme",
   "bugs": {
-      "url": "https://gitlab.com/BonsaiDen/ts-doctest/issues"
+    "url": "https://gitlab.com/BonsaiDen/ts-doctest/issues"
   },
   "bin": {
     "ts-doctest": "./bin/ts-doctest"

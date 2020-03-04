@@ -1,5 +1,4 @@
 // Dependencies ---------------------------------------------------------------
-import * as path from 'path';
 import {Config} from '../src/Config';
 
 // Mocks ----------------------------------------------------------------------
@@ -217,4 +216,3 @@ test('Config does throw in case import cannot be resolved', () => {
     }
 
 });
-

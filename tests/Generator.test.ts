@@ -157,12 +157,6 @@ test('Generator.run generates doc tests from source files', () => {
     expect(mConsole.logs).toEqual([
         ['Using configuration from: /project/tsconfig.json'],
         ['Scanning 2 project file(s) for doc tests...'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.line-4.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.line-13.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.line-22.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.line-31.test.ts'],
-        ['Generated doc test: /project/tests/doc/src/index.ts.line-44.test.ts'],
-        ['Generated doc test: /project/tests/doc/README.md.line-4.test.ts'],
         ['Generated 6 doc test(s) in total.']
     ]);
 

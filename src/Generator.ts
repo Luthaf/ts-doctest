@@ -83,7 +83,6 @@ export class Generator {
             const tests = source.generateTests();
             for(const test of tests) {
                 const docTestFile = testSourceFile.replace(/\.*$/, `.${test.name}.test.ts`);
-                console.log(`Generated doc test: ${docTestFile}`);
                 fs.writeFileSync(docTestFile, test.source);
                 generatedTests += 1;
             }

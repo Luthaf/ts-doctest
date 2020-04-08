@@ -1,6 +1,6 @@
 {
-  "name": "typescript-doctest",
-  "version": "1.1.0",
+  "name": "@luthaf/typescript-doctest",
+  "version": "1.2.0",
   "description": "Doc Test Generator for TypeScript Projects",
   "main": "lib/src/index.js",
   "scripts": {

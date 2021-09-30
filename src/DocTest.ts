@@ -108,7 +108,6 @@ ${DocTest.indentSource(this.getSource())}
 
         // Import Statements
         if (node.kind === SyntaxKind.ImportDeclaration) {
-            delete node.parent;
             imports.push(<ImportPath> <unknown> node);
             this.isAsync = true;
 

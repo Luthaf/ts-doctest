@@ -52,7 +52,7 @@ export class RenderComponent extends RendererComponent {
 
 }
 
-module.exports = function(PluginHost: Application) {
+export function load(PluginHost: Application) {
     // @ts-ignore
     PluginHost.owner.renderer.addComponent('render-component', RenderComponent);
 };

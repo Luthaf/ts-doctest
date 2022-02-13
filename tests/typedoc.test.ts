@@ -4,7 +4,9 @@ import { RendererEvent } from 'typedoc/dist/lib/output/events';
 import { RendererComponent } from 'typedoc/dist/lib/output/components';
 
 // Mocks ----------------------------------------------------------------------
-type MockPlugin = (host: Application) => void;
+interface MockPlugin {
+    load: (host: Application) => void;
+}
 type MockEvents = {
     beginRender: (event: RendererEvent) => {}
 };
@@ -42,11 +44,12 @@ function mockApplication(): MockApplication {
 // Tests ----------------------------------------------------------------------
 test('Does register as a TypeDoc Plugin', async () => {
 
-    const TypeDocPlugin = <MockPlugin> <unknown> (await import('../src/index'));
-    expect(TypeDocPlugin).toBeInstanceOf(Function);
+    const TypeDocPlugin = await import('../src/index') as unknown as MockPlugin;
+
+    expect(TypeDocPlugin.load).toBeInstanceOf(Function);
 
     const application = mockApplication();
-    TypeDocPlugin(application);
+    TypeDocPlugin.load(application);
     expect(application.mockRenderer).toBeInstanceOf(RendererComponent);
     expect(application.mockEvents!.beginRender).toBeInstanceOf(Function);
 
@@ -54,9 +57,9 @@ test('Does register as a TypeDoc Plugin', async () => {
 
 test('TypeDoc Plugin not removes hidden line markers (#) from untagged codeblocks', async () => {
 
-    const TypeDocPlugin = <MockPlugin> <unknown> (await import('../src/index'));
+    const TypeDocPlugin = await import('../src/index') as unknown as MockPlugin;
     const application = mockApplication();
-    TypeDocPlugin(application);
+    TypeDocPlugin.load(application);
 
     const event = <RendererEvent> <unknown> {
         project: {
@@ -79,9 +82,9 @@ test('TypeDoc Plugin not removes hidden line markers (#) from untagged codeblock
 
 test('TypeDoc Plugin updates tagged codeblocks from comments and project readme', async () => {
 
-    const TypeDocPlugin = <MockPlugin> <unknown> (await import('../src/index'));
+    const TypeDocPlugin = await import('../src/index') as unknown as MockPlugin;
     const application = mockApplication();
-    TypeDocPlugin(application);
+    TypeDocPlugin.load(application);
 
     const event = <RendererEvent> <unknown> {
         project: {
@@ -106,9 +109,9 @@ test('TypeDoc Plugin updates tagged codeblocks from comments and project readme'
 
 test('TypeDoc Plugin removes hidden line markers (#) from tagged codeblocks', async () => {
 
-    const TypeDocPlugin = <MockPlugin> <unknown> (await import('../src/index'));
+    const TypeDocPlugin = await import('../src/index') as unknown as MockPlugin;
     const application = mockApplication();
-    TypeDocPlugin(application);
+    TypeDocPlugin.load(application);
 
     const event = <RendererEvent> <unknown> {
         project: {
@@ -131,9 +134,9 @@ test('TypeDoc Plugin removes hidden line markers (#) from tagged codeblocks', as
 
 test('TypeDoc Plugin removes hidden section markers (###...###) from codeblocks', async () => {
 
-    const TypeDocPlugin = <MockPlugin> <unknown> (await import('../src/index'));
+    const TypeDocPlugin = await import('../src/index') as unknown as MockPlugin;
     const application = mockApplication();
-    TypeDocPlugin(application);
+    TypeDocPlugin.load(application);
 
     const event = <RendererEvent> <unknown> {
         project: {
